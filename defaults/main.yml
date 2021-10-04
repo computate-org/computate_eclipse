@@ -1,0 +1,22 @@
+---
+APP_NAME: eclipse
+APP_PYTHON: "{{ '/usr/bin/python' if lookup('file', '/usr/bin/python', errors='ignore') else '/usr/bin/python3' }}"
+APP_SRC: "/usr/local/src/{{ APP_NAME }}"
+APP_OPT: "/opt/{{ APP_NAME }}"
+APP_VERSION_NAME: "neon"
+APP_VERSION_NUMBER: "3"
+APP_USER: "root"
+APP_MIRROR_URL: "https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release"
+APP_DOWNLOAD_FILENAME: "{{ APP_NAME }}-jee-{{ APP_VERSION_NAME }}-{{ APP_VERSION_NUMBER }}-linux-gtk-x86_64.tar.gz"
+APP_DOWNLOAD_URL: "{{ APP_MIRROR_URL }}/{{ APP_VERSION_NAME }}/{{ APP_VERSION_NUMBER }}/{{ APP_DOWNLOAD_FILENAME }}&r=1"
+APP_DOWNLOAD_DEST: "~/Downloads/{{ APP_DOWNLOAD_FILENAME }}"
+APP_DEPENDENCIES:
+  - java-latest-openjdk
+
+####################
+# Ansible defaults #
+####################
+
+# Add to an ansible-vault the username of your user on your computer (echo $HOSTNAME). 
+USER_NAME: "{{ lookup('env', 'USER') }}"
+
