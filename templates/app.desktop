@@ -3,7 +3,7 @@ Type=Application
 Name={{ APP_NAME }}
 Comment=An open source Integrated Development Environment (IDE)
 Icon={{ APP_OPT }}/icon.xpm
-Exec={{ APP_OPT }}/{{ APP_NAME }}
+Exec={{ APP_OPT }}/{{ APP_NAME }}-inst
 Terminal=false
 Categories=Development;IDE;Java;
 

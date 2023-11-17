@@ -1,17 +1,20 @@
 ---
 APP_NAME: eclipse
 APP_PYTHON: "{{ '/usr/bin/python' if lookup('file', '/usr/bin/python', errors='ignore') else '/usr/bin/python3' }}"
-APP_SRC: "/usr/local/src/{{ APP_NAME }}"
-APP_OPT: "/opt/{{ APP_NAME }}"
-APP_VERSION_NAME: "neon"
-APP_VERSION_NUMBER: "3"
+APP_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
+APP_SRC: "{{ APP_PREFIX }}/src/{{ APP_NAME  }}"
+APP_OPT: "{{ APP_PREFIX }}/opt/{{ APP_NAME  }}"
+APP_VERSION_NAME: "2023-09"
 APP_USER: "root"
-APP_MIRROR_URL: "https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release"
-APP_DOWNLOAD_FILENAME: "{{ APP_NAME }}-jee-{{ APP_VERSION_NAME }}-{{ APP_VERSION_NUMBER }}-linux-gtk-x86_64.tar.gz"
-APP_DOWNLOAD_URL: "{{ APP_MIRROR_URL }}/{{ APP_VERSION_NAME }}/{{ APP_VERSION_NUMBER }}/{{ APP_DOWNLOAD_FILENAME }}&r=1"
+  #https://www.eclipse.org/downloads/download.php?file=/oomph/epp/2023-09/R/eclipse-inst-jre-linux64.tar.gz&mirror_id=1294
+APP_MIRROR_ID: 1294
+APP_MIRROR_URL: "https://www.eclipse.org/downloads/download.php?file=/oomph/epp/{{ APP_VERSION_NAME }}/R"
+APP_DOWNLOAD_FILENAME: "{{ APP_NAME }}-inst-jre-linux64.tar.gz"
+APP_DOWNLOAD_URL: "{{ APP_MIRROR_URL }}/{{ APP_DOWNLOAD_FILENAME }}"
 APP_DOWNLOAD_DEST: "~/Downloads/{{ APP_DOWNLOAD_FILENAME }}"
+APP_DESKTOP: "{{ lookup('env', 'HOME') }}/.local/share/applications/{{ APP_NAME }}.desktop"
 APP_DEPENDENCIES:
-  - java-latest-openjdk
+  - java-17-openjdk-devel
 
 ####################
 # Ansible defaults #

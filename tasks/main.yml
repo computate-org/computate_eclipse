@@ -1,37 +1,28 @@
 ---
-- name: "install {{ APP_NAME }} dependencies"
-  package:
-    name: "{{ APP_DEPENDENCIES }}"
-    state: present
-  become: true
-  when: ansible_pkg_mgr != 'homebrew' and APP_PYTHON == '/usr/bin/python'
-  vars:
-    ansible_python_interpreter: "{{ APP_PYTHON }}"
+- name: "Install dependencies: {{ APP_DEPENDENCIES | join(' ') }}"
+  shell: "pkcon install -y {{ item }} | true"
+  loop: "{{ APP_DEPENDENCIES }}"
 - name: Check for the {{ APP_NAME }} download
   stat:
     path: "{{ APP_DOWNLOAD_DEST }}"
   register: APP_DOWNLOAD
 - name: "Download the {{ APP_NAME }} binary {{ APP_DOWNLOAD_URL }}"
-  uri:
-    url: "{{ APP_DOWNLOAD_URL }}"
-    dest: "{{ APP_DOWNLOAD_DEST }}"
-    follow_redirects: all
+  shell:
+    cmd: "xdg-open {{ APP_DOWNLOAD_URL }}"
   when: not APP_DOWNLOAD.stat.exists
 - name: Create the {{ APP_NAME }} install directory {{ APP_OPT }}. 
   file:
     name: "{{ APP_OPT }}"
     state: directory
     owner: "{{ USER_NAME }}"
-  become: true
 - name: Install {{ APP_NAME }} into the {{ APP_OPT }} install directory. 
   unarchive:
     src: "{{ APP_DOWNLOAD_DEST }}"
     dest: "{{ APP_OPT }}"
     remote_src: true
     extra_opts: [--strip-components=1]
-- name: Create the launcher /usr/share/applications/{{ APP_NAME }}.desktop
+- name: "Create the launcher {{ APP_DESKTOP }}"
   template:
     src: app.desktop
-    dest: "/usr/share/applications/{{ APP_NAME }}.desktop"
-  become: true
+    dest: "{{ APP_DESKTOP }}"
 
